@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* KaosMaps Demo Showcase - OKLCH Theme */
+@theme {
+  /* Primary - Deep blue (KaosMaps brand) */
+  --color-primary: oklch(0.55 0.18 250);
+  --color-primary-foreground: oklch(0.98 0 0);
+
+  /* Secondary - Soft purple accent */
+  --color-secondary: oklch(0.65 0.12 300);
+  --color-secondary-foreground: oklch(0.98 0 0);
+
+  /* Accent */
+  --color-accent: oklch(0.70 0.15 200);
+  --color-accent-foreground: oklch(0.15 0 0);
+
+  /* Background & Foreground */
+  --color-background: oklch(0.985 0 0);
+  --color-foreground: oklch(0.12 0 0);
+
+  /* Card surface */
+  --color-card: oklch(0.99 0 0);
+  --color-card-foreground: oklch(0.12 0 0);
+
+  /* Muted for badges/secondary text */
+  --color-muted: oklch(0.95 0 0);
+  --color-muted-foreground: oklch(0.45 0 0);
+
+  /* Border */
+  --color-border: oklch(0.90 0 0);
+
+  /* Status colors */
+  --color-success: oklch(0.65 0.15 145);
+  --color-warning: oklch(0.75 0.15 85);
+  --color-destructive: oklch(0.55 0.20 25);
+
+  /* Ring for focus states */
+  --color-ring: oklch(0.55 0.18 250);
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Shadows */
+  --shadow-card: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 32px 56px -12px rgba(0, 0, 0, 0.12);
+}
+
+/* Dark mode */
+.dark {
+  --color-background: oklch(0.12 0.01 260);
+  --color-foreground: oklch(0.95 0 0);
+  --color-card: oklch(0.16 0.01 260);
+  --color-card-foreground: oklch(0.95 0 0);
+  --color-muted: oklch(0.22 0.01 260);
+  --color-muted-foreground: oklch(0.65 0 0);
+  --color-border: oklch(0.25 0.01 260);
+  --color-primary: oklch(0.65 0.18 250);
+  --color-secondary: oklch(0.70 0.12 300);
+  --shadow-card: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 32px 56px -12px rgba(0, 0, 0, 0.4);
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

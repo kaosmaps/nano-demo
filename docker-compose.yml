@@ -1,0 +1,29 @@
+services:
+  showcase:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: demo-showcase
+    restart: unless-stopped
+    networks:
+      - kaosmaps-demo
+    labels:
+      - "traefik.enable=true"
+      # HTTP router - root path, lowest priority
+      - "traefik.http.routers.showcase.rule=Host(`demo.kaosmaps.com`)"
+      - "traefik.http.routers.showcase.entrypoints=websecure"
+      - "traefik.http.routers.showcase.priority=1"
+      - "traefik.http.routers.showcase.tls=true"
+      - "traefik.http.routers.showcase.tls.certresolver=zerossl"
+      - "traefik.http.routers.showcase.middlewares=demo-auth@file"
+      - "traefik.http.services.showcase.loadbalancer.server.port=80"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+networks:
+  kaosmaps-demo:
+    external: true
