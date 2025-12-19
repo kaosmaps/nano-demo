@@ -90,8 +90,9 @@ jobs:
 
             echo "Stopping old containers..."
             docker compose down --remove-orphans || true
-            # Also remove old nano-demo container if it exists (migration cleanup)
+            # Remove any old containers that might conflict (migration cleanup)
             docker rm -f nano-demo 2>/dev/null || true
+            docker rm -f demo-showcase 2>/dev/null || true
 
             echo "Starting container..."
             docker compose up -d
