@@ -1,13 +1,22 @@
+import { useMemo } from 'react'
 import { BackgroundEffects } from './components/BackgroundEffects'
 import { Header } from './components/Header'
 import { DemoGrid } from './components/DemoGrid'
 import { Footer } from './components/Footer'
 import { AdminPanelProvider, AdminPanel } from './components/admin'
+import { useDeployedApps } from './hooks/useDeployedApps'
 import demosData from './data/demos.json'
 import type { Demo } from './types'
 
 function App() {
-  const demos = demosData.demos as Demo[]
+  const allDemos = demosData.demos as Demo[]
+  const { isDeployed, isLoading } = useDeployedApps()
+
+  // Filter demos to only show those actually deployed on the server
+  const demos = useMemo(() => {
+    if (isLoading) return allDemos // Show all while loading
+    return allDemos.filter((demo) => isDeployed(demo.id))
+  }, [allDemos, isDeployed, isLoading])
 
   return (
     <AdminPanelProvider>
