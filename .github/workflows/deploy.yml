@@ -10,7 +10,7 @@
 # - DEMO_SERVER_USER: root
 # - SSH_PRIVATE_KEY: ed25519 private key
 #
-# Updated: 2025-12-19 12:30
+# Updated: 2025-12-19 14:45
 
 name: Deploy Demo Showcase
 
@@ -51,15 +51,16 @@ jobs:
             fi
 
             # Create docker-compose.yml (build locally, not from GHCR)
+            # Container name MUST be demo-showcase to match Traefik routing
             cat > docker-compose.yml << 'COMPOSE'
-            # nano-demo Production (Built on server)
+            # Demo Showcase Production (Built on server)
             services:
               web:
                 build:
                   context: .
                   dockerfile: Dockerfile
-                image: nano-demo:latest
-                container_name: nano-demo
+                image: demo-showcase:latest
+                container_name: demo-showcase
                 networks:
                   - kaosmaps-demo
                 restart: unless-stopped
@@ -87,8 +88,10 @@ jobs:
             echo "Building image..."
             docker compose build --no-cache
 
-            echo "Stopping old container..."
+            echo "Stopping old containers..."
             docker compose down --remove-orphans || true
+            # Also remove old nano-demo container if it exists (migration cleanup)
+            docker rm -f nano-demo 2>/dev/null || true
 
             echo "Starting container..."
             docker compose up -d
@@ -98,7 +101,7 @@ jobs:
             sleep 5
 
             # Check container is running
-            docker ps | grep nano-demo
+            docker ps | grep demo-showcase
 
             echo "Deployment complete!"
             echo "Access at: https://demo.kaosmaps.com/"
@@ -111,10 +114,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "=== Deployment Status ==="
-            docker ps | grep nano-demo
+            docker ps | grep demo-showcase
             echo ""
             echo "=== Container Logs ==="
-            docker logs nano-demo --tail 10 2>&1 || true
+            docker logs demo-showcase --tail 10 2>&1 || true
+            echo ""
+            echo "=== Test apps.json ==="
+            curl -s http://demo-showcase/apps.json | head -c 200 || echo "Could not fetch apps.json"
             echo ""
             echo "=== Cleanup Old Images ==="
             docker image prune -f
