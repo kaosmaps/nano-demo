@@ -63,6 +63,9 @@ jobs:
                 networks:
                   - kaosmaps-demo
                 restart: unless-stopped
+                volumes:
+                  # Mount apps.json for dynamic sync with Traefik routes
+                  - /opt/kaosmaps/demo/showcase/repo/public/apps.json:/usr/share/nginx/html/apps.json:ro
                 healthcheck:
                   test: ["CMD", "wget", "-q", "--spider", "http://localhost/health"]
                   interval: 30s
@@ -73,6 +76,12 @@ jobs:
               kaosmaps-demo:
                 external: true
             COMPOSE
+
+            # Ensure apps.json exists (sync script creates it)
+            mkdir -p public
+            if [ ! -f public/apps.json ]; then
+              echo '{"apps":[],"updated":"initial"}' > public/apps.json
+            fi
 
             # Build and deploy
             echo "Building image..."
