@@ -125,3 +125,29 @@ jobs:
             echo ""
             echo "=== Cleanup Old Images ==="
             docker image prune -f
+
+      - name: Diagnose Auth Middlewares
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEMO_SERVER_HOST }}
+          username: ${{ secrets.DEMO_SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "=== Traefik Providers ==="
+            curl -s http://localhost:8080/api/overview 2>/dev/null | jq '.providers // "No providers"' || echo "Traefik API not accessible"
+
+            echo ""
+            echo "=== Auth Middlewares (looking for douglas-auth, sk-auth, etc) ==="
+            curl -s http://localhost:8080/api/http/middlewares 2>/dev/null | jq '[.[] | select(.name | contains("auth"))] | .[:10]' || echo "Could not fetch middlewares"
+
+            echo ""
+            echo "=== Douglas Routers (check which middlewares attached) ==="
+            curl -s http://localhost:8080/api/http/routers 2>/dev/null | jq '[.[] | select(.name | contains("douglas"))] | .[].middlewares' || echo "Could not fetch routers"
+
+            echo ""
+            echo "=== Traefik dynamic.yml (if exists) ==="
+            cat /opt/kaosmaps/demo/traefik/dynamic.yml 2>/dev/null || cat /etc/traefik/dynamic.yml 2>/dev/null || echo "No dynamic.yml found"
+
+            echo ""
+            echo "=== Douglas container labels ==="
+            docker inspect douglas-web 2>/dev/null | jq '.[0].Config.Labels | to_entries | map(select(.key | contains("traefik")))[:10]' || echo "douglas-web container not found"
