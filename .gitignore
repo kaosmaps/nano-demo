@@ -1,6 +1,9 @@
 # Personal notes (not committed)
 .me/
 
+# Environment variables (Kamal secrets)
+.env
+
 # Logs
 logs
 *.log
