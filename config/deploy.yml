@@ -1,0 +1,87 @@
+# Kamal Deployment Configuration
+# https://kamal-deploy.org/docs/configuration/
+
+# Application name (used for Docker image and container naming)
+service: demo-showcase
+
+# Docker image configuration
+image: YOUR_DOCKERHUB_USERNAME/demo-showcase
+
+# Servers to deploy to
+servers:
+  web:
+    hosts:
+      - YOUR_HETZNER_SERVER_IP
+    labels:
+      traefik.enable: true
+      # HTTP router - root path, lowest priority
+      traefik.http.routers.showcase.rule: Host(`demo.kaosmaps.com`)
+      traefik.http.routers.showcase.entrypoints: websecure
+      traefik.http.routers.showcase.priority: 1
+      traefik.http.routers.showcase.tls: true
+      traefik.http.routers.showcase.tls.certresolver: zerossl
+      traefik.http.routers.showcase.middlewares: demo-auth@file
+      traefik.http.services.showcase.loadbalancer.server.port: 80
+
+# Kamal Proxy configuration (built-in reverse proxy)
+# Note: You can use kamal-proxy or keep your existing Traefik setup
+proxy:
+  # Set to 'none' if using external Traefik
+  # Set to 'kamal' to use built-in kamal-proxy
+  type: none  # Using existing Traefik setup
+
+# Registry configuration (Docker Hub)
+registry:
+  server: docker.io
+  username: YOUR_DOCKERHUB_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Environment variables
+env:
+  clear:
+    # Add any non-secret environment variables here
+  secret:
+    # Add secret environment variable names here
+    # Values come from .env file
+
+# SSH configuration
+ssh:
+  user: root
+
+# Docker builder configuration
+builder:
+  arch: amd64
+  # Use local builder (builds on your machine)
+  local:
+    enabled: true
+  # Or use remote builder (builds on server)
+  # remote:
+  #   arch: amd64
+
+# Health check configuration
+healthcheck:
+  path: /health
+  port: 80
+  interval: 30s
+  timeout: 5s
+  retries: 3
+
+# Volume mounts
+volumes:
+  - /opt/kaosmaps/demo/showcase/apps.json:/usr/share/nginx/html/apps.json:ro
+
+# Network configuration to connect to existing Traefik network
+networks:
+  - kaosmaps-demo
+
+# Retain old containers for quick rollback
+retain_containers: 3
+
+# Deployment settings
+boot:
+  limit: 1  # Number of containers to boot at once during deployment
+
+# Traefik integration
+# Since you're using external Traefik, we'll use 'none' for proxy
+# and manage Traefik routing via Docker labels above

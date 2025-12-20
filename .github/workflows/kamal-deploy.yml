@@ -1,0 +1,94 @@
+# Kamal Zero-Downtime Deployment Workflow
+# Deploys demo-showcase using Kamal with zero downtime
+#
+# Triggers:
+# - Push to main branch
+# - Manual workflow dispatch
+#
+# Required secrets:
+# - KAMAL_REGISTRY_PASSWORD: Docker Hub token/password
+# - SSH_PRIVATE_KEY: SSH private key for server access
+# - DOCKERHUB_USERNAME: Your Docker Hub username
+# - HETZNER_SERVER_IP: Your Hetzner server IP address
+#
+# How it works:
+# 1. Installs Kamal on GitHub Actions runner
+# 2. Configures SSH access to server
+# 3. Substitutes placeholder values in config/deploy.yml
+# 4. Runs `kamal deploy` for zero-downtime deployment
+#
+# Zero-downtime process:
+# - New containers start alongside old ones
+# - Health checks verify new containers
+# - Traffic gradually shifts to new containers
+# - Old containers stop only after new ones are healthy
+#
+# Created: 2025-12-20
+
+name: Kamal Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Zero-Downtime Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: false
+
+      - name: Install Kamal
+        run: gem install kamal
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.HETZNER_SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Configure deployment
+        run: |
+          # Replace placeholder values in deploy.yml
+          sed -i "s/YOUR_DOCKERHUB_USERNAME/${{ secrets.DOCKERHUB_USERNAME }}/g" config/deploy.yml
+          sed -i "s/YOUR_HETZNER_SERVER_IP/${{ secrets.HETZNER_SERVER_IP }}/g" config/deploy.yml
+
+      - name: Create .env file
+        run: |
+          echo "KAMAL_REGISTRY_PASSWORD=${{ secrets.KAMAL_REGISTRY_PASSWORD }}" > .env
+
+      - name: Deploy with Kamal (Zero Downtime)
+        run: |
+          # Configure SSH to use the deploy key
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no"
+
+          # Deploy with zero downtime
+          kamal deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+
+      - name: Verify deployment
+        run: |
+          echo "=== Deployment Complete ==="
+          kamal app details
+          echo ""
+          echo "=== Container Status ==="
+          kamal app containers
+          echo ""
+          echo "Application deployed to: https://demo.kaosmaps.com/"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f ~/.ssh/deploy_key
+          rm -f .env
