@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 
 export function Header() {
   return (
-    <header className="py-8 md:py-12">
+    <header className="py-12 md:py-20">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -10,49 +10,51 @@ export function Header() {
         className="text-center"
       >
         {/* Logo / Brand */}
-        <div className="mb-6">
+        <div className="mb-8">
           <motion.h1
-            className="text-4xl md:text-5xl font-bold tracking-tight"
+            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1, duration: 0.5 }}
+            style={{ fontFamily: "'Red Hat Display', sans-serif" }}
           >
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            <span className="text-gradient">
               KaosMaps
             </span>
-            <span className="text-foreground"> Demos</span>
+            <span className="text-foreground/80"> Demos</span>
           </motion.h1>
         </div>
 
         {/* Tagline */}
         <motion.p
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+          className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          Explore our portfolio of AI-powered applications and innovative solutions.
-          <span className="hidden md:inline"> Each demo showcases cutting-edge technology in action.</span>
+          Experience our portfolio of{' '}
+          <span className="text-foreground font-medium">AI-powered applications</span>{' '}
+          and innovative solutions.
         </motion.p>
 
         {/* Stats or highlights */}
         <motion.div
-          className="mt-8 flex items-center justify-center gap-8 text-sm"
+          className="mt-10 flex flex-wrap items-center justify-center gap-6 md:gap-10"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-success opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-success" />
+          <div className="flex items-center gap-2.5 glass px-4 py-2 rounded-full">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10b981]" />
             </span>
-            <span className="text-muted-foreground">Live demos available</span>
+            <span className="text-sm font-medium text-foreground/80">6 Live Apps</span>
           </div>
-          <div className="h-4 w-px bg-border" />
-          <div className="text-muted-foreground">
-            Built with <span className="font-medium text-foreground">FastAPI</span> +{' '}
-            <span className="font-medium text-foreground">React</span>
+
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Built with</span>
+            <span className="text-gradient font-bold text-base">NanoBricks</span>
           </div>
         </motion.div>
       </motion.div>

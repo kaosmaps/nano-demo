@@ -46,9 +46,9 @@ export function Footer() {
           </a>
         </div>
 
-        {/* Tech attribution */}
+        {/* Brand attribution */}
         <div className="text-xs text-muted-foreground/60">
-          Built with React + Vite + shadcn/ui
+          Built with <span className="text-gradient font-semibold">NanoBricks</span> by KaosMaps
         </div>
       </div>
     </motion.footer>

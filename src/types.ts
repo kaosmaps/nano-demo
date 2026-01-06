@@ -6,7 +6,7 @@ export interface Demo {
   tagline: string
   description: string
   previewImage: string
-  techStack: string[]
+  features: string[]
   demoUrl: string
   status: DemoStatus
   featured?: boolean
