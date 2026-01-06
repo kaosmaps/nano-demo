@@ -72,6 +72,18 @@ jobs:
                   interval: 30s
                   timeout: 5s
                   retries: 3
+                labels:
+                  # Enable Traefik
+                  - "traefik.enable=true"
+                  - "traefik.docker.network=kaosmaps-demo"
+                  # Showcase Router: root path (lowest priority)
+                  - "traefik.http.routers.demo-showcase.rule=Host(`demo.kaosmaps.com`)"
+                  - "traefik.http.routers.demo-showcase.entrypoints=websecure"
+                  - "traefik.http.routers.demo-showcase.tls=true"
+                  - "traefik.http.routers.demo-showcase.tls.certresolver=letsencrypt"
+                  - "traefik.http.routers.demo-showcase.priority=1"
+                  # Service config
+                  - "traefik.http.services.demo-showcase.loadbalancer.server.port=80"
 
             networks:
               kaosmaps-demo:
