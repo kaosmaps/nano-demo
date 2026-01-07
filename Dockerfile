@@ -32,9 +32,9 @@ RUN find /usr/share/nginx/html -type d -exec chmod 755 {} \; && \
 # Expose port
 EXPOSE 80
 
-# Health check
+# Health check (use 127.0.0.1 instead of localhost to avoid IPv6 issues)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://127.0.0.1/health || exit 1
 
 # Run nginx
 CMD ["nginx", "-g", "daemon off;"]

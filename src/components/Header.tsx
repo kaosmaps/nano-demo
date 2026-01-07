@@ -9,21 +9,19 @@ export function Header() {
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="text-center"
       >
-        {/* Logo / Brand */}
-        <div className="mb-8">
-          <motion.h1
-            className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            style={{ fontFamily: "'Red Hat Display', sans-serif" }}
-          >
-            <span className="text-gradient">
-              KaosMaps
-            </span>
-            <span className="text-foreground/80"> Demos</span>
-          </motion.h1>
-        </div>
+        {/* Logo */}
+        <motion.div
+          className="mb-8 flex justify-center"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+        >
+          <img
+            src="/kaosmaps-logo.png"
+            alt="KaosMaps - Show, Don't Tell"
+            className="h-20 md:h-28 lg:h-32 w-auto"
+          />
+        </motion.div>
 
         {/* Tagline */}
         <motion.p

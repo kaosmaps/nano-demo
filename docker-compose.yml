@@ -14,11 +14,10 @@ services:
       - "traefik.http.routers.showcase.entrypoints=websecure"
       - "traefik.http.routers.showcase.priority=1"
       - "traefik.http.routers.showcase.tls=true"
-      - "traefik.http.routers.showcase.tls.certresolver=zerossl"
-      - "traefik.http.routers.showcase.middlewares=demo-auth@file"
+      - "traefik.http.routers.showcase.tls.certresolver=letsencrypt"
       - "traefik.http.services.showcase.loadbalancer.server.port=80"
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1/health"]
       interval: 30s
       timeout: 3s
       retries: 3

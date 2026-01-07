@@ -1,6 +1,6 @@
 # nano-demo
 
-**Last Updated**: 2025-12-22
+**Last Updated**: 2026-01-06
 
 ## 🚀 DEMO SERVER ACCESS (NEVER FORGET!)
 
@@ -33,6 +33,7 @@ ssh -i ~/.ssh/kaosmaps-demo-deploy root@46.224.195.69 'cd /opt/traefik && docker
 | App | Demo Path | Prod Path |
 |-----|-----------|-----------|
 | lawpilots | `/opt/kaosmaps/demo/lawpilots` | `/opt/lawpilots` |
+| hauck | `/opt/apps/hauck` | - |
 | showcase | `/opt/kaosmaps/demo/showcase` | - |
 
 ## 🔐 Basic Auth Credentials
@@ -40,12 +41,15 @@ ssh -i ~/.ssh/kaosmaps-demo-deploy root@46.224.195.69 'cd /opt/traefik && docker
 | App | Demo Auth | Prod Auth |
 |-----|-----------|-----------|
 | lawpilots | `demo:Demo.lawpilots.2025` | `lawpilots:KaosMaps!!lawpilots#demo` |
+| hauck | `demo:Demo.hauck.2025` | - |
 
 ## 🌐 URLs
 
 | App | Demo URL | Prod URL |
 |-----|----------|----------|
+| showcase | `https://demo.kaosmaps.com/` | - |
 | lawpilots | `https://demo.kaosmaps.com/lawpilots/` | `https://lawpilots.kaosmaps.com/` |
+| hauck | `https://demo.kaosmaps.com/hauck/` | - |
 
 ## ⚠️ KNOWN ISSUES
 
