@@ -1,0 +1,24 @@
+# Zero-Issues Policy — minimal stub for nano-demo.
+#
+# nano-demo is a dormant static showcase repo currently being partially
+# decommissioned (kaosmaps-demo-001 server destroyed 2026-05-18). Until
+# the repo's purpose is re-evaluated (migrate to k3s vs archive), this
+# diagnostic suite has a single no-op check so the cortex-shim gate
+# parses correctly. Full check-suite design (biome/eslint/typecheck)
+# deferred until repo's future is decided.
+
+[suite]
+name = "nano-demo"
+description = "No-op stub — repo decommission in progress, full diagnostic suite deferred"
+
+[[suite.checks]]
+id = "noop"
+label = "No-op substrate stub (always passes)"
+command = "true"
+parser = "biome"
+critical = false
+timeout_ms = 1000
+
+[baseline]
+file = ".git/.session-baseline-errors"
+auto_snapshot_at = "session-start"

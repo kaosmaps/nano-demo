@@ -1,13 +1,21 @@
 # nano-demo
 
-**Last Updated**: 2026-01-06
+**Last Updated**: 2026-05-18
 
-## 🚀 DEMO SERVER ACCESS (NEVER FORGET!)
+> **🗑 DECOMMISSIONED 2026-05-18**: the `kaosmaps-demo-001` Hetzner server
+> backing this demo was destroyed during the nano-infra VPS fleet cleanup
+> (PR #162). The `.github/workflows/deploy.yml` workflow was removed in this
+> same PR — there is no automated deploy target anymore. This repo and its
+> docker-compose / Dockerfile content are preserved so the demo can be
+> re-deployed to a new host or migrated to the nano-infra k3s cluster when
+> needed. The server-access block below is retained as historical reference.
 
-| Property | Value |
-|----------|-------|
-| **IP Address** | `46.224.195.69` |
-| **Server Name** | `kaosmaps-demo-001` |
+## 🗄️ HISTORICAL: Demo server (decommissioned)
+
+| Property | Value (historical) |
+|----------|--------------------|
+| **IP Address** | `46.224.195.69` *(destroyed)* |
+| **Server Name** | `kaosmaps-demo-001` *(destroyed)* |
 | **SSH Key** | `~/.ssh/kaosmaps-demo-deploy` |
 | **SSH User** | `root` |
 | **Traefik Config** | `/opt/traefik/docker-compose.yml` |
