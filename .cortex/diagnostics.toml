@@ -1,0 +1,18 @@
+# Zero-Issues Policy — minimal stub for nano-demo.
+#
+# nano-demo is a dormant static showcase repo currently being partially
+# decommissioned (kaosmaps-demo-001 server destroyed 2026-05-18). Until
+# the repo's purpose is re-evaluated (migrate to k3s vs archive), this
+# diagnostic suite is intentionally empty so the cortex-shim gate finds
+# the substrate file but has no checks to run.
+#
+# Adoption posture: Path-A stub — file presence satisfies shim, deferred
+# full check-suite design until repo's future is decided.
+
+[suite]
+name = "nano-demo"
+description = "Empty stub — repo decommission in progress, full diagnostic suite deferred"
+
+[baseline]
+file = ".git/.session-baseline-errors"
+auto_snapshot_at = "session-start"
